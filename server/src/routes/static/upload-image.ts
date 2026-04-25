@@ -35,6 +35,9 @@ router.post(
   verify(),
   uploadOption.single("image"),
   async (ctx) => {
+    if (!process.env.CLOUD_SERVER) {
+      ctx.body = { success: true, message: "未启动OSS" };
+    }
     let buffer = ctx.file.buffer;
 
     let fileName = `${v4().replace(/-/g, "")}.webp`;

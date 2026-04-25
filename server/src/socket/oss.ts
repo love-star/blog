@@ -354,6 +354,10 @@ io.use(async (socket, next) => {
   }
 });
 io.on("connection", async (socket) => {
+  if (!process.env.CLOUD_SERVER) {
+    io.emit("message", { message: `未启动OSS` });
+    return;
+  }
   if (
     (await redis.get("oss-key-list")) &&
     (await redis.get("oss-key-last_time"))
